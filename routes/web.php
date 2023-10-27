@@ -27,7 +27,7 @@ Route::middleware("auth")->group(function () {
        Route::resource('/egresado', 'App\Http\Controllers\EgresadoController');
 
         Route::put('/egresado/{id}/editar', [EgresadoController::class, 'update'])
-        ->name('egresado.update')->where('id','[0-9]+');
+        ->name('egresado.editar')->where('id','[0-9]+');
 
         Route::put('/carreras/{id}/editar', [CarreraController::class, 'update'])
        ->name('carrera.update')->where('id','[0-9]+');

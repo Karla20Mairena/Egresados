@@ -6,7 +6,7 @@
 
 
 
-<form  method="POST" action="{{ route('egresado.update',['id'=>$egresado->id])}}">
+<form  method="POST" action="{{ route('egresado.editar',['id'=>$egresado->id])}}">
     @method('put')
     @csrf
 
