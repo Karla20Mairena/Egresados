@@ -23,7 +23,7 @@ class CambiarContraTest extends TestCase
         // Datos de prueba para cambiar la contraseña
         $newPassword = 'nueva_contra123';
 
-        $response = $this->post('/change-password', [
+        $response = $this->post('contrasenia.cambiar', [
             'password' => $newPassword,
             'password_confirmation' => $newPassword,
         ]);
@@ -51,7 +51,7 @@ class CambiarContraTest extends TestCase
         // Datos de prueba para cambiar la contraseña
         $newPassword = 'nueva_contra123';
 
-        $response = $this->post('/change-password', [
+        $response = $this->post('contrasenia.cambiar', [
             'password' => $newPassword,
             'password_confirmation' => $newPassword,
         ]);

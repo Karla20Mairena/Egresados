@@ -4,7 +4,7 @@ namespace Tests\Feature;
 
 // use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
-use App\User;
+use App\Models\User;
 
 class ProfileControllerTest extends TestCase
 {
@@ -18,7 +18,7 @@ class ProfileControllerTest extends TestCase
         // Solicitud de actualización de perfil
         $response = $this->put('/profile/update', [
             'name' => 'Nuevo Nombre',
-            'email' => 'nuevoemail@example.com',
+            'correo' => 'nuevocorreo@example.com',
         ]);
 
         // Verifica que la respuesta sea exitosa
@@ -28,7 +28,7 @@ class ProfileControllerTest extends TestCase
         $this->assertDatabaseHas('users', [
             'id' => $user->id,
             'name' => 'Nuevo Nombre',
-            'email' => 'nuevoemail@example.com',
+            'correo' => 'nuevocorreo@example.com',
         ]);
     }
 
@@ -49,7 +49,7 @@ class ProfileControllerTest extends TestCase
 
         // Verifica que la contraseña se haya actualizado en la base de datos
         $this->assertCredentials([
-            'email' => $user->email,
+            'correo' => $user->correo,
             'password' => 'nuevacontraseña',
         ]);
     }

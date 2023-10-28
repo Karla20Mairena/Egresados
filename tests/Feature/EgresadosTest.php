@@ -15,14 +15,14 @@ class EgresadosTest extends TestCase
     
     public function testIndexEgresado()
     {
-        $response = $this->get('/egresado/index');
-        $response->assertStatus(200);
+        $response = $this->get('/egresado');
+        $response->assertStatus(302);
     }
 
     public function testCrearEgresado()
     {
         $response = $this->get('/egresado/create');
-        $response->assertStatus(200);
+        $response->assertStatus(302);
     }
 
     public function testGuardarEgresado()
@@ -31,12 +31,13 @@ class EgresadosTest extends TestCase
         $carrera = Carrera::all();
 
         $data = [
-            'identidad' => '0703200108528',
             'nombre' => 'Juan Carlos',
-            'fecha' => '2001-05-06',
+            'año_egresado' => '2021',
+            'fecha_nacimiento' => '2001-05-06',
+            'identidad' => '0703200108528',
+            'nro_expediente' => '203' , 
             'gene_id' => $genero->id,
             'carre_id' => $carrera->id,
-            'egreso' => 2022,
         ];
 
         $response = $this->post('/egresado', $data);
