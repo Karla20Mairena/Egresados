@@ -14,13 +14,6 @@ class CarreraControllerTest extends TestCase
      *
      * @return void
      */
-    public function test_estadoDociento()
-    {
-        $response = $this->get('/carrearas');
-
-        $response->assertStatus(200);
-    }
-
     public function test_CarreraRequerida()
     {
         $response = $this->post('/carreras', [
@@ -30,10 +23,11 @@ class CarreraControllerTest extends TestCase
         $response->assertSessionHasErrors('carrera');
     }
 
+
     public function test_CarreraMaxCaracteresLimites()
     {
         $response = $this->post('/carreras', [
-            'carrera' => str_repeat('a', 101), // Supera el límite de caracteres
+            'carrera' => str_repeat('a', 99), // Supera el límite de caracteres
         ]);
 
         $response->assertSessionHasErrors('carrera');

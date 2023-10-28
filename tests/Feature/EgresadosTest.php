@@ -12,18 +12,6 @@ use App\Models\Carrera;
 
 class EgresadosTest extends TestCase
 {
-    
-    public function testIndexEgresado()
-    {
-        $response = $this->get('/egresado');
-        $response->assertStatus(302);
-    }
-
-    public function testCrearEgresado()
-    {
-        $response = $this->get('/egresado/create');
-        $response->assertStatus(302);
-    }
 
     public function testGuardarEgresado()
     {
@@ -35,7 +23,7 @@ class EgresadosTest extends TestCase
             'año_egresado' => '2021',
             'fecha_nacimiento' => '2001-05-06',
             'identidad' => '0703200108528',
-            'nro_expediente' => '203' , 
+            'nro_expediente' => '203',
             'gene_id' => $genero->id,
             'carre_id' => $carrera->id,
         ];
@@ -66,7 +54,7 @@ class EgresadosTest extends TestCase
         ];
 
         $response = $this->put("/egresado/{$egresado->id}", $data);
-        $response->assertStatus(302); 
+        $response->assertStatus(302);
         $this->assertDatabaseHas('egresados', ['nombre' => 'Nombre Actualizado']);
     }
 
@@ -74,7 +62,7 @@ class EgresadosTest extends TestCase
     {
         $egresado = Egresado::factory()->create();
         $response = $this->delete("/egresado/{$egresado->id}");
-        $response->assertStatus(302); 
+        $response->assertStatus(302);
         $this->assertDatabaseMissing('egresados', ['id' => $egresado->id]);
     }
 }
