@@ -49,6 +49,11 @@
                                         <strong>{{ $errors->first('password') }}</strong>
                                     </span>
                                 @endif
+                                @if (Session::has('mensaje'))
+                                    <span class="invalid-feedback" style="display: block;" role="alert">
+                                        <strong>{{Session::get('mensaje')}}</strong>
+                                    </span>
+                                @endif
                             </div>
                             <div class="text-center">
                                 <button type="submit" class="btn btn-primary my-4">{{ __('Iniciar sesión') }}</button>

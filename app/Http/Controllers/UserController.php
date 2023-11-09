@@ -40,7 +40,7 @@ class UserController extends Controller
     {
 
         $rules=[
-            'viejapassword' => ["required",new Contraactual],
+            'viejapassword' => ['required',new Contraactual],
             'password' => 'required|min:8|confirmed',
         ];
 
@@ -116,7 +116,8 @@ class UserController extends Controller
             'username.min' => 'El nombre de usuario debe de tener mas de 8 caracteres',
             'username.unique' => 'El nombre de usuario ya esta en uso',
 
-            'correo.required' => 'El correo electronico no puede estar vacío',
+            'correo.required' => 'El campo correo electronico es obligatorio',
+            'correo.email' => 'El campo correo electrónico debe ser una dirección de correo válida.',
             'correo.max' => 'El correo electronico debe de tener menos de 100 caracteres',
             'correo.unique' => 'El correo electronico ya esta en uso',
 
@@ -131,7 +132,7 @@ class UserController extends Controller
             'telefono.required' => 'El telefono no puede estar vacío',
             'telefono.unique' => 'El telefono ya esta en uso',
 
-            'password.required' => 'La contraseña no puede estar vacío',
+            'password.required' => 'El campo contraseña ',
             'password.min' => 'La contraseña debe de tener mas de 8 caracteres',
             'password.confirmed' => 'La contraseña no coinciden',
 
@@ -140,6 +141,7 @@ class UserController extends Controller
         ];
 
         $this->validate($request,$rules,$mensaje);
+        
 
         $user = new User();
         $user->name = $request->input('name');
@@ -212,7 +214,7 @@ class UserController extends Controller
            
                 'name' =>'required|regex:/^([A-Za-zÁÉÍÓÚáéíóúñÑ]+)(\s[A-Za-zÁÉÍÓÚáéíóúñÑ]+)*$/|max:100',
                 'username' => 'required|min:8|max:50',
-                'correo' => 'required|max:100|email|',
+                'correo' => 'required|max:100|email',
                 'nacimiento'=>'required|date|before:'.$maxima.'|after:'.$minima,
                 'identidad'=> 'required|max:15|regex:([0-9]{4}-[0-9]{4}-[0-9]{5})',
                 'telefono'=> 'required|regex:([0-9]{4}-[0-9]{4})',

@@ -130,8 +130,12 @@ return [
     */
 
     'custom' => [
-        'attribute-name' => [
-            'rule-name' => 'custom-message',
+        'correo' => [
+            'required' => 'El campo correo electrónico es obligatorio.',
+            'email' => 'El campo correo electrónico debe ser una dirección de correo válida.',
+        ],
+        'password' => [
+            'required' => 'El campo contraseña es obligatorio.',
         ],
     ],
 

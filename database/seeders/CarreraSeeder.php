@@ -15,6 +15,8 @@ class CarreraSeeder extends Seeder
      */
     public function run()
     {
+        
+
         Carrera::create([
 
             'Carrera' => 'Bachillerato en Ciencias y Letras',
@@ -35,6 +37,7 @@ class CarreraSeeder extends Seeder
       
               
         ]);
+
  
     }
 }

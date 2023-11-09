@@ -39,20 +39,18 @@ class CarreraController extends Controller
 
         
         $request->validate([
-        
-            'carrera'=>'required|regex:/^([A-Za-zÁÉÍÓÚáéíóúñÑ]+)(\s[A-Za-zÁÉÍÓÚáéíóúñÑ]+)*$/|max:100',
-            
+            'carrera' => 'required|regex:/^[A-Za-zÁÉÍÓÚáéíóúñÑ\s]+$/|max:100',
         ]);
-
+    
         $carreras = new Carrera();
         $carreras->carrera = $request->get('carrera');
-
+    
         $carreras->save();
-
-        if( $carreras){
+    
+        if ($carreras) {
             return redirect('/carreras')->with('mensaje', 'La carrera fue creada exitosamente.');
-        }else{
-            //retornar con un mensaje de error.
+        } else {
+            // Retornar con un mensaje de error.
         }
         
     }
@@ -94,7 +92,10 @@ class CarreraController extends Controller
         
         $request->validate([
         
-            'carrera'=>'required|regex:/^([A-Za-zÁÉÍÓÚáéíóúñÑ]+)(\s[A-Za-zÁÉÍÓÚáéíóúñÑ]+)*$/|max:100',
+            'carrera' => 'required|regex:/^[A-Za-zÁÉÍÓÚáéíóúñÑ\s]+$/|max:100',
+
+
+
             
         ]);
 

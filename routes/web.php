@@ -22,7 +22,7 @@ use App\Http\Controllers\AyudaController;
 Route::middleware("auth")->group(function () {
     Route::middleware("desactivado")->group(function () {
        
-        Route::resource('carreras', 'App\Http\Controllers\CarreraController');
+        Route::resource('/carreras', 'App\Http\Controllers\CarreraController');
 
        Route::resource('/egresado', 'App\Http\Controllers\EgresadoController');
 
