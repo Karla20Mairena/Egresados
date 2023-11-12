@@ -129,6 +129,8 @@ return [
     |
     */
 
+
+    
     'custom' => [
         'correo' => [
             'required' => 'El campo correo electrónico es obligatorio.',

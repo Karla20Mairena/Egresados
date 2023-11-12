@@ -12,6 +12,7 @@
                         <img alt="Image placeholder" style="width:50%;max-width:50px; height:50px" src="{{asset('imagen/logo.png') }}">
                         <strong> Egresados Cosme García C</strong>
                     </div>
+                    
                         <div class="text-center text-muted mb-4">
                        <h2>Iniciar Sesion</h2>
                         </div>
