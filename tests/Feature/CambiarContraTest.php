@@ -2,6 +2,7 @@
 
 namespace Tests\Feature;
 
+use App\Models\User;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
 // use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -10,11 +11,26 @@ use Tests\TestCase;
 class CambiarContraTest extends TestCase
 {
 
+    //Esta es una prueba que verifica si la página que contiene el formulario de cambiar contraseña está disponible y devuelve un 
+    //código de estado HTTP 200.
+    public function testCambiarContraFormIsAvailable()
+    {
+        $response = $this->get('/egresado/contrasenia');
+        $response->assertStatus(200);
+    }
+
     public function testChangePassword()
     {
         // Crea un usuario de prueba
         $user = factory(User::class)->create([
-            'id' => 2, 
+            'name' => "Juan Pablo Perez",
+            'correo' => "pablojuan@gmail.com",
+            'nacimiento' => "08-10-01",
+            'username' => "pablo",
+            'password' => "pablo123",
+            'identidad' => "0703200103082",
+            'telefono' => "9856-2300",
+            'estado' => 1,
         ]);
 
         // Iniciar sesión como el usuario
