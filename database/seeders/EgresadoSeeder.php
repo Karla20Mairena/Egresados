@@ -17,3 +17,4 @@ class EgresadoSeeder extends Seeder
         \App\Models\Egresado::factory(50)->create();
     }
 }
+
