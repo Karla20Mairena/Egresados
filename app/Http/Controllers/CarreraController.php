@@ -37,20 +37,28 @@ class CarreraController extends Controller
     public function store(Request $request)
     {
 
-        
-        $request->validate([
-            'carrera' => 'required|regex:/^[A-Za-zÁÉÍÓÚáéíóúñÑ\s]+$/|max:100',
-        ]);
-    
+        $rules=[
+            'carrera'=>'required|regex:/^([A-Za-zÁÉÍÓÚáéíóúñÑ]+)(\s[A-Za-zÁÉÍÓÚáéíóúñÑ]+)*$/|max:100|min:5',
+        ];
+
+        $mensaje=[
+            'carrera.required'=>'El campo :attribute es obligatorio.',
+            'carrera.regex'=>'El campo :attribute solo acepta letras.',
+            'carrera.max'=>'El campo :attribute no debe de pasar los 100 caracteres.',
+            'carrera.min'=>'El campo :attribute debe de tener al menos 5 caracteres.',
+        ];
+
+        $this->validate($request,$rules,$mensaje);
+
         $carreras = new Carrera();
         $carreras->carrera = $request->get('carrera');
-    
+
         $carreras->save();
-    
-        if ($carreras) {
+
+        if( $carreras){
             return redirect('/carreras')->with('mensaje', 'La carrera fue creada exitosamente.');
-        } else {
-            // Retornar con un mensaje de error.
+        }else{
+            //retornar con un mensaje de error.
         }
         
     }
@@ -92,10 +100,7 @@ class CarreraController extends Controller
         
         $request->validate([
         
-            'carrera' => 'required|regex:/^[A-Za-zÁÉÍÓÚáéíóúñÑ\s]+$/|max:100',
-
-
-
+            'carrera'=>'required|regex:/^([A-Za-zÁÉÍÓÚáéíóúñÑ]+)(\s[A-Za-zÁÉÍÓÚáéíóúñÑ]+)*$/|max:100',
             
         ]);
 
