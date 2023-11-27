@@ -9,12 +9,12 @@ class GeneroFactory extends Factory
 {
     protected $model = Genero::class;
 
-   public function definition()
-  {
+    public function definition()
+    {
 
-    return [
-        'name' => $this->faker->name,
-    ];
-   }
+        return [
+            'name' => $this->faker->name,
+        ];
+    }
 
 }
