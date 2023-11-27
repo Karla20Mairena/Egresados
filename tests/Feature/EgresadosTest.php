@@ -8,22 +8,45 @@ use Tests\TestCase;
 use App\Models\Egresado;
 use App\Models\Genero;
 use App\Models\Carrera;
-
+use App\Models\User;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class EgresadosTest extends TestCase
 {
+    use RefreshDatabase;
+
+    protected $user;
+
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        $this->user = User::factory()->create();
+
+        $this->actingAs($this->user);
+
+        //migramos y sembramos
+        $this->artisan('migrate:refresh');
+        $this->artisan('db:seed');
+    }
 
     public function testGuardarEgresado()
     {
+         //no puedes retornar a todos y luego utilizar ->id porque digamos hay 2 generos
+        //y no sabria cual id tomaria de los 5 mejor devolver solo 1
+        /*
         $genero = Genero::all();
         $carrera = Carrera::all();
+        */
+        $genero = Genero::inRandomOrder()->first();
+        $carrera = Carrera::inRandomOrder()->first();
 
         $data = [
             'nombre' => 'Juan Carlos',
-            'año_egresado' => '2021',
-            'fecha_nacimiento' => '2001-05-06',
+            'egreso' => '2021', //el atributo es egreso
+            'fecha' => '2001-05-06', //el atributo es fecha
             'identidad' => '0703200108528',
-            'nro_expediente' => '203',
+            'expediente' => '203', //el atributo es expediente
             'gene_id' => $genero->id,
             'carre_id' => $carrera->id,
         ];
@@ -35,10 +58,15 @@ class EgresadosTest extends TestCase
 
     public function testEditarEgresado()
     {
+        //creamos un egresado
+        $egresado = Egresado::factory()->create();
+
         $egresado = Egresado::find($egresado->id);
         $response = $this->get("/egresado/{$egresado->id}/edit");
         $response->assertStatus(200);
         $response->assertSee($egresado->nombre);
+
+
     }
 
     public function testActualizarEgresado()
@@ -51,6 +79,13 @@ class EgresadosTest extends TestCase
             'nombre' => 'Nombre Actualizado',
             'gene_id' => $genero->id,
             'carre_id' => $carrera->id,
+
+            
+            //le faltan los atributos restantes
+            'egreso' => $egresado->año_egresado, //el atributo es egreso
+            'fecha' => $egresado->fecha_nacimiento, //el atributo es fecha
+            'identidad' => $egresado->identidad,
+            'expediente' => $egresado->nro_expediente, //el atributo es expediente
         ];
 
         $response = $this->put("/egresado/{$egresado->id}", $data);
