@@ -7,6 +7,7 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\AyudaController;
+use App\Http\Controllers\ProfileController;
 
 /*
 |--------------------------------------------------------------------------
@@ -21,6 +22,10 @@ use App\Http\Controllers\AyudaController;
 
 Route::middleware("auth")->group(function () {
     Route::middleware("desactivado")->group(function () {
+
+        Route::put('/profile/update',[ProfileController::class, 'update']);
+
+        Route::put('/profile/password',[ProfileController::class, 'password']);
        
         Route::resource('/carreras', 'App\Http\Controllers\CarreraController');
 
