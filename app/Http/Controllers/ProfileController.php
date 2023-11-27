@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\ProfileRequest;
 use App\Http\Requests\PasswordRequest;
+use App\Models\User;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 
 class ProfileController extends Controller
@@ -26,11 +28,16 @@ class ProfileController extends Controller
      */
     public function update(ProfileRequest $request)
     {
-        if (auth()->user()->id == 1) {
-            return back()->withErrors(['not_allow_profile' => __('You are not allowed to change data for a default user.')]);
+        $usuario = User::find(auth()->user()->id);
+
+        if (!$usuario) {
+            // Manejar el caso en que el usuario no se encuentra
+            return back()->withErrors(['error' => 'User not found.'.auth()->user()->id]);
         }
 
-        auth()->user()->update($request->all());
+        $usuario->name = $request->name;
+        $usuario->correo = $request->correo;
+        $usuario->save();
 
         return back()->withStatus(__('Profile successfully updated.'));
     }
@@ -41,13 +48,17 @@ class ProfileController extends Controller
      * @param  \App\Http\Requests\PasswordRequest  $request
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function password(PasswordRequest $request)
+    public function password(ProfileRequest $request)
     {
-        if (auth()->user()->id == 1) {
-            return back()->withErrors(['not_allow_password' => __('You are not allowed to change the password for a default user.')]);
+        $usuario = User::find(auth()->user()->id);
+
+        if (!$usuario) {
+            // Manejar el caso en que el usuario no se encuentra
+            return back()->withErrors(['error' => 'User not found.'.auth()->user()->id]);
         }
 
-        auth()->user()->update(['password' => Hash::make($request->get('password'))]);
+        $usuario->password = Hash::make($request->password);
+        $usuario->save();
 
         return back()->withPasswordStatus(__('Password successfully updated.'));
     }
