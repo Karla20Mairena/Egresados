@@ -17,8 +17,8 @@ class EgresadoFactory extends Factory
     return [
         'nombre' => $this->faker->name,
         'año_egresado' => $this->faker->year,
-        'fecha_nacimiento' => $this->faker->date(),
-        'identidad' => $this->faker->unique()->numerify('########'),
+        'fecha_nacimiento' => $this->faker->dateTimeBetween('-30 years', '2008-11-21')->format('Y-m-d'),
+        'identidad' => $this->faker->unique()->numerify('#############'),
         'nro_expediente' => $this->faker->unique()->randomNumber(5),
         'gene_id' => function () {
             return Genero::inRandomOrder()->first()->id;

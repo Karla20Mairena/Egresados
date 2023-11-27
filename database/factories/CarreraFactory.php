@@ -3,6 +3,7 @@
 namespace Database\Factories;
 
 use App\Models\Carrera;
+use App\Models\Genero;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class CarreraFactory extends Factory
