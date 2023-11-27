@@ -43,8 +43,8 @@ class LoginTest extends TestCase
         ]));
 
         $response->assertInvalid([
-            'correo' => 'El campo correo electrónico es obligatorio.',
-            'password' => 'El campo contraseña es obligatorio.'
+            'correo' => 'El campo correo es obligatorio.',
+            'password' => 'El campo password es obligatorio.'
         ]);
     }
 
@@ -57,7 +57,7 @@ class LoginTest extends TestCase
         ]));
 
         $response->assertInvalid([
-            'correo' => 'El campo correo electrónico es obligatorio.',
+            'correo' => 'El campo correo es obligatorio.',
         ]);
     }
 
@@ -70,7 +70,7 @@ class LoginTest extends TestCase
         ]));
 
         $response->assertInvalid([
-            'password' => 'El campo contraseña es obligatorio.'
+            'password' => 'El campo password es obligatorio.'
         ]);
     }
 
@@ -82,7 +82,7 @@ class LoginTest extends TestCase
         ]));
         
         $response->assertInvalid([
-            'password' => 'Estas credenciales no coinciden con nuestros registros.'
+            'correo' => 'Estas credenciales no coinciden con nuestros registros.'
         ]);
         
     }
