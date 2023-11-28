@@ -100,4 +100,41 @@ class EgresadosTest extends TestCase
         $response->assertStatus(302);
         $this->assertDatabaseMissing('egresados', ['id' => $egresado->id]);
     }
+
+    
+    //Esta prueba verifica que el egresado o los egresados que no coinciden con la consulta no se muestran.
+    public function testEgresado_NoMostrarDatosFiltrados()
+    {
+        $response = $this->get(route('egresado', ['q' => 'No Match']));
+        $response->assertDontSeeText('Egresado Test');
+    }
+
+
+    //Esta prueba verifica que se muestre un mensaje cuando el egresado o los egresados no coincidan con la consulta
+    public function testEgresado_MensajeNoHayDatos()
+    {
+        $response = $this->get(route('egresado.index', ['q' => 'No Match']));
+        $response->assertSeeText('No se encontraron resultados');
+    }
+
+    public function testEgresado_filtrarIdEgresado(){
+        $response = $this->get(route('egresado.index', ['q' => '79444264']));
+        $response->assertSeeText('79444264');
+    }
+
+    public function testEgresado_filtrarNombreEgresado(){
+        $response = $this->get(route('egresado.index', ['q' => '79444264']));
+        $response->assertSeeText('Hector Trantow');
+    }
+
+
+    public function testEgresado_filtrarCarrera(){
+        $response = $this->get(route('egresado.index', ['q' => '79444264']));
+        $response->assertSeeText('Bachillerato en Ciencias y Letras');
+    }
+
+    public function testEgresado_filtrarAño(){
+        $response = $this->get(route('egresado.index', ['q' => '79444264']));
+        $response->assertSeeText('1983');
+    }
 }
