@@ -4,15 +4,34 @@ namespace Tests\Feature;
 
 use Tests\TestCase;
 use App\Models\User;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use Spatie\Permission\Models\Role;
 use Illuminate\Support\Facades\Hash;
 
 
 class UsuariosTest extends TestCase
 {
+     //refrescamos base de datos y logiamos
+     use RefreshDatabase;
+
+     protected $user;
+ 
+     protected function setUp(): void
+     {
+         parent::setUp();
+ 
+         $this->user = User::factory()->create();
+ 
+         $this->actingAs($this->user);
+ 
+         //migramos y sembramos
+         $this->artisan('migrate:refresh');
+         $this->artisan('db:seed');
+     }
+
     public function test_formulario_cambiar_clave()
     {
-        $response = $this->get('/formularioclave');
+        $response = $this->get('/contrasenia');
 
         $response->assertStatus(200);
         $response->assertViewIs('User.clave');
@@ -21,12 +40,12 @@ class UsuariosTest extends TestCase
     public function test_actualizar_clave()
     {
         $user = \App\Models\User::factory()->create();
-        $oldPassword = 'clave_antigua';
+        $oldPassword = 'password';//la contraseña por defecto
         $newPassword = 'clave_nueva';
 
         $this->actingAs($user);
 
-        $response = $this->post('/guardarclave', [
+        $response = $this->post('/contrasenia', [
             'viejapassword' => $oldPassword,
             'password' => $newPassword,
             'password_confirmation' => $newPassword,
@@ -43,25 +62,26 @@ class UsuariosTest extends TestCase
         $response->assertStatus(200);
         $response->assertViewHas('usuarios');
         $usuarios = $response->original->getData()['usuarios'];
-        $this->assertCount(0, $usuarios);
+        $this->assertGreaterThan(0, count($usuarios));
     }
 
     public function test_actualizar_clave_con_clave_incorrecta()
     {
         $user = \App\Models\User::factory()->create();
-        $oldPassword = 'clave_antigua';
+        $oldPassword = 'password';//la contraseña por defecto
         $newPassword = 'clave_nueva';
 
         $this->actingAs($user);
 
-        $response = $this->post('/guardarclave', [
+        $response = $this->post('/contrasenia', [
             'viejapassword' => 'clave_incorrecta',
             'password' => $newPassword,
             'password_confirmation' => $newPassword,
         ]);
 
-        $response->assertRedirect('/formularioclave');
+        $response->assertRedirect('/contrasenia');
         $this->assertFalse(Hash::check($newPassword, $user->fresh()->password));
+        $response->assertSessionHasErrors();
     }
 
     public function test_registrar_usuario_con_informacion_invalida()
@@ -75,6 +95,10 @@ class UsuariosTest extends TestCase
 
         $response->assertSessionHasErrors();
     }
+
+
+
+    
 
     public function test_user_probar_rol_admin()
     {
