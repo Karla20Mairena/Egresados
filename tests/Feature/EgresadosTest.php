@@ -21,18 +21,13 @@ class EgresadosTest extends TestCase
     {
         parent::setUp();
 
-        // Buscar el usuario en la base de datos por correo electrónico
-        $this->user = User::where('correo', 'cosme@gmail.com')
-        ->orWhere('correo', 'cosme2@gmail.com')
-        ->first();
+        $this->user = User::factory()->create();
 
-        // Si no puedes encontrar el usuario, podrías querer lanzar un error para que sepas que algo está mal
-        if (!$this->user) {
-            $this->fail('Usuario no encontrado');
-        }
-
-        // Actuar como el usuario encontrado
         $this->actingAs($this->user);
+
+        //migramos y sembramos
+        $this->artisan('migrate:refresh');
+        $this->artisan('db:seed');
     }
 
     public function testGuardarEgresado()
@@ -43,7 +38,7 @@ class EgresadosTest extends TestCase
         $genero = Genero::all();
         $carrera = Carrera::all();
         */
-        $genero = Genero::inRandomOrder()->first();
+       $genero = Genero::inRandomOrder()->first();
         $carrera = Carrera::inRandomOrder()->first();
 
         $data = [
@@ -52,11 +47,12 @@ class EgresadosTest extends TestCase
             'fecha_nacimiento' => '2001-05-06', 
             'identidad' => '0703200108528',
             'nro_expediente' => '203', 
-            'gene_id' => $genero = Genero::inRandomOrder()->first(),
-            'carre_id' =>  $carrera = Carrera::inRandomOrder()->first()
+            'gene_id' => $genero->id,
+            'carre_id' =>  $carrera->id,
         ];
 
         $response = $this->post('/egresado', $data);
+        $response->assertStatus(302);
         $this->assertDatabaseHas('egresados', ['nombre' => 'Juan Carlos']);
     }
 

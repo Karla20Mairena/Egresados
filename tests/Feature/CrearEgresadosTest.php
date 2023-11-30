@@ -50,7 +50,7 @@ class CrearEgresadosTest extends TestCase
         // Datos del egresado a enviar
         $datosEgresado = [
             'nombre' => 'Nombre del Egresado',
-            'año_egresado' => 2023,
+            'año_egresado' => '2023',
             'fecha_nacimiento' => '1990-01-01',
             'identidad' => '123456789',
             'nro_expediente' => 'EX-123',
