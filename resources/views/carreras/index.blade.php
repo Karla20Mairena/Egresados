@@ -61,7 +61,8 @@ setTimeout(quitarerror, 3000);
                 <a type="button" href="./carreras/{{$carrera->id}}/edit" class="btn btn-info" title="Editar Carrera">
                 <i class="fas fa-pencil-alt" aria-hidden="true"></i></a>
                 @csrf
-              
+                @method('DELETE')
+                <button type="submit" class="btn btn-danger" class="fa-solid fa-trash">Borrar</button>
                 </form>
             </td>
         </tr>

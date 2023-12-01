@@ -126,4 +126,12 @@ class CarreraController extends Controller
      * @return \Illuminate\Http\Response
      */
  
+     public function destroy($id)
+     {
+         $carrera = Carrera::find($id);
+         $carrera->delete();
+ 
+         return redirect('/carreras')->with('mensaje', 'La carrera fue borrada completamente');
+        
+     }
 }
