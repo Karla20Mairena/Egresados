@@ -247,12 +247,494 @@ class EditarEgresadoTest extends TestCase
         $response->assertSessionHasErrors('fecha_nacimiento');
     }
 
+    public function test_puede_actualizar_egresado()
+    {
+        $egresado = Egresado::factory()->create();
+
+        $genero = Genero::factory()->create();
+        $carrera = Carrera::factory()->create();
+
+        $newData = [
+            'nombre' => $this->faker->name,
+            'año_egresado' => $this->faker->year,
+            'fecha_nacimiento' => $this->faker->date,
+            'identidad' => $this->faker->numerify('#############'),
+            'nro_expediente' => $this->faker->randomNumber(5),
+            'gene_id' => $genero->id,
+            'carre_id' => $carrera->id,
+        ];
+
+        $response = $this->put("/egresado/{$egresado->id}", $newData);
+
+        $response->assertRedirect('/egresado')
+            ->assertSessionHas('mensaje', 'El egresado fue modificado exitosamente.');
+
+        $this->assertDatabaseHas('egresados', $newData);
+    }
+
+    public function test_requiere_todos_los_campos_requeridos_para_actualizar()
+{
+    $egresado = Egresado::factory()->create();
+
+    $response = $this->put("/egresado/{$egresado->id}", []);
+
+    $response->assertSessionHasErrors(['nombre', 'año_egresado' , 'fecha_nacimiento', 
+    'identidad' , 'nro_expediente', 'gene_id', 'carre_id']);
+}
+
+public function test_limite_fecha_nacimiento()
+{
+    $egresado = Egresado::factory()->create();
+
+    // Introducir una fecha fuera del rango permitido
+    $data = [
+        'fecha_nacimiento' => date('Y-m-d', strtotime('-150 years')), // Fuera del rango permitido
+    ];
+
+    $response = $this->put("/egresado/{$egresado->id}", $data);
+
+    $response->assertSessionHasErrors('fecha_nacimiento');
+}
+
+public function test_puede_actualizar_con_campos_nulos()
+{
+    $egresado = Egresado::factory()->create();
+
+    $data = [
+        'nombre' => null,
+        'año_egresado' => null,
+        'fecha_nacimiento' => null,
+        'identidad' => null,
+        'nro_expediente' => null,
+        'gene_id' => null,
+        'carre_id' => null,
+    ];
+
+    $response = $this->put("/egresado/{$egresado->id}", $data);
+
+    $response->assertRedirect('/egresado')
+        ->assertSessionHas('mensaje', 'El egresado fue modificado exitosamente.');
+
+    // Verificar que los campos se hayan actualizado como NULL en la base de datos
+    $this->assertDatabaseHas('egresados', [
+        'nombre' => null,
+        'año_egresado' => null,
+        'fecha_nacimiento' => null,
+        'identidad' => null,
+        'nro_expediente' => null,
+        'gene_id' => null,
+        'carre_id' => null,
+    ]);
+}
+
+public function test_actualizar_identidad_formato_invalido()
+{
+    $egresado = Egresado::factory()->create();
+
+    // Datos con formatos incorrectos
+    $data = [
+        'identidad' => '1234567890', // Formato incorrecto
+    ];
+
+    $response = $this->put("/egresado/{$egresado->id}", $data);
+
+    $response->assertSessionHasErrors(['identidad']);
+}
+
+public function test_actualizar_identidad_sin_guiones()
+{
+    $egresado = Egresado::factory()->create();
+
+    // Datos con formatos incorrectos
+    $data = [
+        'identidad' => '0703199802418', // Formato incorrecto
+    ];
+
+    $response = $this->put("/egresado/{$egresado->id}", $data);
+
+    $response->assertSessionHasErrors(['identidad']);
+}
+
+public function test_actualizar_identidad_sin_guiones_con_espacios()
+{
+    $egresado = Egresado::factory()->create();
+
+    // Datos con formatos incorrectos
+    $data = [
+        'identidad' => '0703 1998 02418', // Formato incorrecto
+    ];
+
+    $response = $this->put("/egresado/{$egresado->id}", $data);
+
+    $response->assertSessionHasErrors(['identidad']);
+}
 
 
+public function test_actualizar_identidad_formato_valido()
+{
+    $egresado = Egresado::factory()->create();
+
+    // Datos con formatos incorrectos
+    $data = [
+        'identidad' => '0703-1998-02418', // Formato incorrecto
+    ];
+
+    $response = $this->put("/egresado/{$egresado->id}", $data);
+
+    $response->assertSessionHasErrors(['identidad']);
+}
+
+public function test_actualizar_identidad_con_letras()
+{
+    $egresado = Egresado::factory()->create();
+
+    // Datos con formatos incorrectos
+    $data = [
+        'identidad' => 'abcdefghik', // Formato incorrecto
+    ];
+
+    $response = $this->put("/egresado/{$egresado->id}", $data);
+
+    $response->assertSessionHasErrors(['identidad']);
+}
+
+public function test_actualizar_identidad_con_caracteres_especiales()
+{
+    $egresado = Egresado::factory()->create();
+
+    // Datos con formatos incorrectos
+    $data = [
+        'identidad' => '12@$#%$%', // Formato incorrecto
+    ];
+
+    $response = $this->put("/egresado/{$egresado->id}", $data);
+
+    $response->assertSessionHasErrors(['identidad']);
+}
+
+public function test_actualizar_identidad_vacio()
+{
+    $egresado = Egresado::factory()->create();
+
+    // Datos con formatos incorrectos
+    $data = [
+        'identidad' => '', // Formato vacio
+    ];
+
+    $response = $this->put("/egresado/{$egresado->id}", $data);
+
+    $response->assertSessionHasErrors(['identidad']);
+}
 
 
+public function test_actualizar_numero_expediente_con_letras()
+{
+    $egresado = Egresado::factory()->create();
+
+    $data = [
+        'nro_expediente' => 'abcde', // Formato incorrecto
+    ];
+
+    $response = $this->put("/egresado/{$egresado->id}", $data);
+
+    $response->assertSessionHasErrors(['nro_expediente']);
+}
+
+public function test_actualizar_numero_expediente_extenso()
+{
+    $egresado = Egresado::factory()->create();
+
+    $data = [
+        'nro_expediente' => '1234567891011', // Formato incorrecto
+    ];
+
+    $response = $this->put("/egresado/{$egresado->id}", $data);
+
+    $response->assertSessionHasErrors(['nro_expediente']);
+}
+
+public function test_actualizar_numero_expediente_corto()
+{
+    $egresado = Egresado::factory()->create();
+
+    $data = [
+        'nro_expediente' => '1', // Formato incorrecto
+    ];
+
+    $response = $this->put("/egresado/{$egresado->id}", $data);
+
+    $response->assertSessionHasErrors(['nro_expediente']);
+}
+
+public function test_actualizar_numero_expediente_con_caracteres_especiales()
+{
+    $egresado = Egresado::factory()->create();
+
+    $data = [
+        'nro_expediente' => '@#$$%%#$', // Formato incorrecto
+    ];
+
+    $response = $this->put("/egresado/{$egresado->id}", $data);
+
+    $response->assertSessionHasErrors(['nro_expediente']);
+}
+
+public function test_actualizar_numero_expediente_vacio()
+{
+    $egresado = Egresado::factory()->create();
+
+    // Datos con formatos incorrectos
+    $data = [
+        'nro_expediente' => '', // Formato vacio
+    ];
+
+    $response = $this->put("/egresado/{$egresado->id}", $data);
+
+    $response->assertSessionHasErrors(['nro_expediente']);
+}
 
 
+public function test_limite_año_egresado()
+{
+    $egresado = Egresado::factory()->create();
 
+    // Introducir un año fuera del rango permitido
+    $data = [
+        'año_egresado' => date('Y') + 2, // Año en el futuro
+    ];
+
+    $response = $this->put("/egresado/{$egresado->id}", $data);
+
+    $response->assertSessionHasErrors('año_egresado');
+}
+
+public function test_año_egresado_vacio()
+{
+    $egresado = Egresado::factory()->create();
+
+    // Introducir un año fuera del rango permitido
+    $data = [
+        'año_egresado' => '', // Año egresado
+    ];
+
+    $response = $this->put("/egresado/{$egresado->id}", $data);
+
+    $response->assertSessionHasErrors('año_egresado');
+}
+
+public function test_año_egresado_con_letras()
+{
+    $egresado = Egresado::factory()->create();
+
+    // Introducir un año fuera del rango permitido
+    $data = [
+        'año_egresado' => 'ABC', // Año egresado con letras (invalido)
+    ];
+
+    $response = $this->put("/egresado/{$egresado->id}", $data);
+
+    $response->assertSessionHasErrors('año_egresado');
+}
+
+public function test_año_egresado_con_caracteres_especiales()
+{
+    $egresado = Egresado::factory()->create();
+
+    // Introducir un año fuera del rango permitido
+    $data = [
+        'año_egresado' => '@@#$$%%$', // Año egresado (invalido)
+    ];
+
+    $response = $this->put("/egresado/{$egresado->id}", $data);
+
+    $response->assertSessionHasErrors('año_egresado');
+}
+
+public function test_puede_actualizar_con_datos_validos()
+{
+    
+    $egresado = Egresado::factory()->create();
+
+    $genero = Genero::factory()->create();
+    $carrera = Carrera::factory()->create();
+
+    $data = [
+        'nombre' => $this->faker->name,
+        'año_egresado' => $this->faker->year,
+        'fecha_nacimiento' => $this->faker->date,
+        'identidad' => $this->faker->numerify('#############'),
+        'nro_expediente' => $this->faker->randomNumber(5),
+        'gene_id' => $genero->id,
+        'carre_id' => $carrera->id,
+    ];
+
+    $response = $this->put("/egresado/{$egresado->id}", $data);
+
+    $response->assertRedirect('/egresado')
+        ->assertSessionHas('mensaje', 'El egresado fue modificado exitosamente.');
+
+    $this->assertDatabaseHas('egresados', $data);
+}
+
+
+public function test_actualizar_egresado_inexistente()
+{
+    $nonExistingId = 9999; // Un ID que no existe
+
+    $response = $this->put("/egresado/{$nonExistingId}", []);
+
+    $response->assertNotFound();
+}
+
+public function test_actualizar_con_campos_minimos_requeridos()
+{
+    $egresado = Egresado::factory()->create();
+
+    $data = [
+        'nombre' => 'Josue Mencias Alvarado', // Nombre válido
+        'año_egresado' => date('Y') - 10, // Año de egreso válido
+        'gene_id' => Genero::factory()->create()->id, // ID de género válido
+        'carre_id' => Carrera::factory()->create()->id, // ID de carrera válida
+    ];
+
+    $response = $this->put("/egresado/{$egresado->id}", $data);
+
+    $response->assertRedirect('/egresado')
+        ->assertSessionHas('mensaje', 'El egresado fue modificado exitosamente.');
+
+    $this->assertDatabaseHas('egresados', $data);
+}
+
+public function test_actualizar_fecha_nacimiento_en_rango_permitido()
+{
+    $egresado = Egresado::factory()->create();
+
+    // Fecha de nacimiento dentro del rango permitido
+    $validDateOfBirth = date('Y-m-d', strtotime('-25 years'));
+
+    $data = [
+        'fecha_nacimiento' => $validDateOfBirth,
+    ];
+
+    $response = $this->put("/egresado/{$egresado->id}", $data);
+
+    $response->assertRedirect('/egresado')
+        ->assertSessionHas('mensaje', 'El egresado fue modificado exitosamente.');
+
+    $this->assertDatabaseHas('egresados', ['fecha_nacimiento' => $validDateOfBirth]);
+}
+
+
+public function test_actualizar_con_genero_inexistente()
+{
+    $egresado = Egresado::factory()->create();
+
+    // IDs inexistentes de género y carrera
+    $nonExistingGenderId = 9999;
+
+    $data = [
+        'gene_id' => $nonExistingGenderId,
+    ];
+
+    $response = $this->put("/egresado/{$egresado->id}", $data);
+
+    $response->assertSessionHasErrors(['gene_id']);
+}
+
+public function test_actualizar_con_carrera_inexistente()
+{
+    $egresado = Egresado::factory()->create();
+
+    // IDs inexistentes de género y carrera
+    $nonExistingCarreerId = 9999;
+
+    $data = [
+        'carre_id' =>  $nonExistingCarreerId ,
+    ];
+
+    $response = $this->put("/egresado/{$egresado->id}", $data);
+
+    $response->assertSessionHasErrors(['carre_id']);
+}
+
+public function test_actualizar_con_genero_existente()
+{
+    $egresado = Egresado::factory()->create();
+
+    $existingGenero = Genero::factory()->create();
+
+    $data = [
+        'gene_id' => $existingGenero->id,
+    ];
+
+    $response = $this->put("/egresado/{$egresado->id}", $data);
+
+    $response->assertRedirect('/egresado')
+        ->assertSessionHas('mensaje', 'El egresado fue modificado exitosamente.');
+
+    $this->assertDatabaseHas('egresados', $data);
+}
+
+public function test_actualizar_con_carrera_existente()
+{
+    $egresado = Egresado::factory()->create();
+
+    $existingCarrera = Carrera::factory()->create();
+
+    $data = [
+        'carre_id' => $existingCarrera->id,
+    ];
+
+    $response = $this->put("/egresado/{$egresado->id}", $data);
+
+    $response->assertRedirect('/egresado')
+        ->assertSessionHas('mensaje', 'El egresado fue modificado exitosamente.');
+
+    $this->assertDatabaseHas('egresados', $data);
+}
+
+public function test_fecha_nacimiento_vacia_y_año_egresado_invalido()
+{
+    $egresado = Egresado::factory()->create();
+
+    $data = [
+        'fecha' => '', // Fecha de nacimiento vacía
+        'año_egresado' => date('Y') + 5, // Año de egreso inválido (en el futuro)
+    ];
+
+    $response = $this->put("/egresado/{$egresado->id}", $data);
+
+    $response->assertSessionHasErrors(['fecha_nacimiento', 'año_egresado']);
+}
+
+public function test_actualizar_año_egresado_menor_a_fecha_nacimiento()
+{
+    $egresado = Egresado::factory()->create();
+
+    $data = [
+        'fecha_nacimiento' => '', // Fecha de nacimiento vacía
+        'año_egresado' => date('Y') + 5, // Año de egreso inválido (en el futuro)
+    ];
+
+    $response = $this->put("/egresado/{$egresado->id}", $data);
+
+    $response->assertSessionHasErrors(['fecha_nacimiento', 'año_egresado']);
+}
+
+public function test_actualizar_fecha_nacimiento_mayor_a_año_egresado()
+{
+    $egresado = Egresado::factory()->create([
+        'fecha_nacimiento' => date('Y-m-d', strtotime('-20 years')), // Fecha de nacimiento válida
+        'año_egresado' => date('Y') - 25, // Año de egreso mayor que la fecha de nacimiento
+    ]);
+
+    $data = [
+        'fecha' => date('Y-m-d', strtotime('-15 years')), // Fecha de nacimiento mayor que el año de egreso
+    ];
+
+    $response = $this->put("/egresado/{$egresado->id}", $data);
+
+    $response->assertSessionHasErrors('fecha');
+}
 
 }
