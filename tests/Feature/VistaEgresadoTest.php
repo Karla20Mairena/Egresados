@@ -89,15 +89,37 @@ class VistaEgresadoTest extends TestCase
         $response->assertStatus(404);
     }
 
-    // Prueba de la vista create para egresados devuelve un código de estado 403 cuando el usuario está autenticado pero no tiene el rol de 'admin'.
-    public function test_VistaCreateEgresadoUsuarioAutenticadoNoTieneRolAdmin()
-    {
-        $this->be($this->user); // Autenticar al usuario sin asignar rol 'admin'
+    // Prueba de la vista edit para egresados devuelve un código de estado 403 cuando el usuario está autenticado pero no tiene el rol de 'admin'.
+    public function test_VistaEditPropietarioSinRolAdmin()
+    { 
+    $this->user->assignRole('admin'); // Asignar el rol 'admin' al usuario
 
-        $response = $this->get('/egresado/create');
+    $this->be($this->user); // Autenticar al usuario
 
-        $response->assertStatus(403);
+    // Simular la eliminación del rol 'admin'
+    $this->user->removeRole('admin');
+
+    $response = $this->get('/propietario/1/editar');
+
+    $response->assertStatus(403); // Verificar que se recibe un status 403 (Forbidden)
     }
+
+     // Prueba de la vista create para egresados devuelve un código de estado 403 cuando el usuario está autenticado pero no tiene el rol de 'admin'.
+     public function test_VistaCreatePropietarioSinRolAdmin()
+     { 
+     $this->user->assignRole('admin'); // Asignar el rol 'admin' al usuario
+ 
+     $this->be($this->user); // Autenticar al usuario
+ 
+     // Simular la eliminación del rol 'admin'
+     $this->user->removeRole('admin');
+ 
+     $response = $this->get('/propietario/create');
+
+     $response->assertStatus(403); // Verificar que se recibe un status 403 (Forbidden)
+     }
+ 
+
 
     // Prueba de la vista edit para egresados con ID 1 devuelve un código de estado 403 cuando el usuario está autenticado pero no tiene el rol de 'admin'.
     public function test__VistaEditEgresadoUsuarioAutenticado_ID_1_NoTieneRolAdmin()
