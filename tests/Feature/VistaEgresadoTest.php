@@ -134,8 +134,8 @@ class VistaEgresadoTest extends TestCase
       // Prueba de la vista index para egresados devuelve un código de estado 200 cuando el usuario está autenticado y tiene el rol de 'admin'.
       public function test_VistaIndexEgresadoCuandoUsuarioAutenticadoRolAdmin()
       {
-          $role = \Spatie\Permission\Models\Role::create(['name' => 'admin']);
-          $this->user->assignRole($role); // Asignar el rol 'admin' al usuario
+        //   $role = \Spatie\Permission\Models\Role::create(['name' => 'admin']);
+          $this->user->assignRole(); // Asignar el rol 'admin' al usuario
   
           $this->be($this->user); // Autenticar al usuario
   
@@ -147,8 +147,8 @@ class VistaEgresadoTest extends TestCase
     // Prueba de la vista create para egresados devuelve un código de estado 200 cuando el usuario está autenticado y tiene el rol de 'admin'.
     public function test_VistaCreateEgresadoCuandoUsuarioAutenticadoRolAdmin()
     {
-        $role = \Spatie\Permission\Models\Role::create(['name' => 'admin']);
-        $this->user->assignRole($role); // Asignar el rol 'admin' al usuario
+        // $role = \Spatie\Permission\Models\Role::create(['name' => 'admin']);
+        $this->user->assignRole(); // Asignar el rol 'admin' al usuario
 
         $this->be($this->user); // Autenticar al usuario
 
@@ -161,8 +161,8 @@ class VistaEgresadoTest extends TestCase
     // Prueba de la vista edit para egresados devuelve un código de estado 200 cuando el usuario está autenticado y tiene el rol de 'admin'.
     public function test_VistaEditEgresadoCuandoUsuarioAutenticadoRolAdmin()
     {
-        $role = \Spatie\Permission\Models\Role::create(['name' => 'admin']);
-        $this->user->assignRole($role); // Asignar el rol 'admin' al usuario
+        // $role = \Spatie\Permission\Models\Role::create(['name' => 'admin']);
+        $this->user->assignRole(); // Asignar el rol 'admin' al usuario
 
         $this->be($this->user); // Autenticar al usuario
 
