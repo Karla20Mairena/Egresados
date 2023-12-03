@@ -11,23 +11,27 @@ use Illuminate\Support\Facades\Hash;
 
 class UsuariosTest extends TestCase
 {
-     //refrescamos base de datos y logiamos
-     use RefreshDatabase;
+    protected $user;
+    /**
+     * A basic feature test example.
+     *
+     * @return void
+     */
+    protected function setUp(): void
+    {
+        parent::setUp();
 
-     protected $user;
- 
-     protected function setUp(): void
-     {
-         parent::setUp();
- 
-         $this->user = User::factory()->create();
- 
-         $this->actingAs($this->user);
- 
-         //migramos y sembramos
-         $this->artisan('migrate:refresh');
-         $this->artisan('db:seed');
-     }
+        // Buscar el usuario en la base de datos por correo electrónico
+        $this->user = User::where('correo', 'cosme2@gmail.com')->first();
+
+        // Si no puedes encontrar el usuario, podrías querer lanzar un error para que sepas que algo está mal
+        if (!$this->user) {
+            $this->fail('Usuario no encontrado');
+        }
+
+        // Actuar como el usuario encontrado
+        $this->actingAs($this->user);
+    }
 
     public function test_formulario_cambiar_clave()
     {
@@ -40,7 +44,7 @@ class UsuariosTest extends TestCase
     public function test_actualizar_clave()
     {
         $user = \App\Models\User::factory()->create();
-        $oldPassword = 'password';//la contraseña por defecto
+        $oldPassword = 'password'; //la contraseña por defecto
         $newPassword = 'clave_nueva';
 
         $this->actingAs($user);
@@ -68,7 +72,7 @@ class UsuariosTest extends TestCase
     public function test_actualizar_clave_con_clave_incorrecta()
     {
         $user = \App\Models\User::factory()->create();
-        $oldPassword = 'password';//la contraseña por defecto
+        $oldPassword = 'password'; //la contraseña por defecto
         $newPassword = 'clave_nueva';
 
         $this->actingAs($user);
@@ -98,7 +102,7 @@ class UsuariosTest extends TestCase
 
 
 
-    
+
 
     public function test_user_probar_rol_admin()
     {
