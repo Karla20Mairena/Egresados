@@ -7,7 +7,7 @@ use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
 use Illuminate\Support\Facades\Route;
 
-class PruebasDeRutas extends TestCase
+class RutasTest extends TestCase
 {
     /**
      * Una prueba básica de características.
