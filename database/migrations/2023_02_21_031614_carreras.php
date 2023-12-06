@@ -15,7 +15,7 @@ return new class extends Migration
     {
         Schema::create('carreras', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('Carrera');
+            $table->string('Carrera')->unique();
             $table->timestamps();
         });
     }

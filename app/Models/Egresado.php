@@ -4,9 +4,20 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\QueryException;
 
 class Egresado extends Model
 {
+
+    protected $fillable = [
+        'nombre',
+        'año_egresado',
+        'fecha_nacimiento',
+        'identidad',
+        'nro_expediente',
+        'gene_id',
+        'carre_id',
+    ];
     use HasFactory;
     
     public function carreras(){ 
