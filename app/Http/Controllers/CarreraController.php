@@ -38,7 +38,7 @@ class CarreraController extends Controller
     {
 
         $rules=[
-            'carrera'=>'required|regex:/^([A-Za-zÁÉÍÓÚáéíóúñÑ]+)(\s[A-Za-zÁÉÍÓÚáéíóúñÑ]+)*$/|max:100|min:5',
+            'carrera'=>'required|regex:/^([A-Za-zÁÉÍÓÚáéíóúñÑ]+)(\s[A-Za-zÁÉÍÓÚáéíóúñÑ]+)*$/|max:70|min:5|unique:carreras,carrera',
         ];
 
         $mensaje=[
@@ -118,20 +118,5 @@ class CarreraController extends Controller
 
     
     }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
  
-     public function destroy($id)
-     {
-         $carrera = Carrera::find($id);
-         $carrera->delete();
- 
-         return redirect('/carreras')->with('mensaje', 'La carrera fue borrada completamente');
-        
-     }
 }
