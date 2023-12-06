@@ -43,12 +43,12 @@ class EgresadosTest extends TestCase
 
         $data = [
             'nombre' => 'Juan Carlos',
-            'año_egresado' => '2021', 
-            'fecha_nacimiento' => '2001-05-06', 
+            'egreso' => '2021', //el atributo es egreso
+            'fecha' => '2001-05-06', //el atributo es fecha
             'identidad' => '0703200108528',
-            'nro_expediente' => '203', 
+            'expediente' => '203', //el atributo es expediente
             'gene_id' => $genero->id,
-            'carre_id' =>  $carrera->id,
+            'carre_id' => $carrera->id,
         ];
 
         $response = $this->post('/egresado', $data);
@@ -76,11 +76,12 @@ class EgresadosTest extends TestCase
         $carrera = Carrera::factory()->create();
 
         $data = [
-            'nombre' => 'Nombre Actualizado',
-            'año_egresado' => $egresado->año_egresado,
-            'fecha_nacimiento' => $egresado->fecha_nacimiento,
+            'nombre' => 'Nombre Actualizado',           
+            //le faltan los atributos restantes
+            'egreso' => $egresado->año_egresado, //el atributo es egreso
+            'fecha' => $egresado->fecha_nacimiento, //el atributo es fecha
             'identidad' => $egresado->identidad,
-            'nro_expediente' => $egresado->nro_expediente, 
+            'expediente' => $egresado->nro_expediente, 
             'gene_id' => $genero->id,
             'carre_id' => $carrera->id,
         ];
