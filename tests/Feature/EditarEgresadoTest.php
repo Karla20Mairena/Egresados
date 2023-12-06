@@ -19,10 +19,9 @@ class EditarEgresadoTest extends TestCase
     {
         parent::setUp();
 
-        // Buscar el usuario en la base de datos por correo electrónico
-        $this->user = User::where('correo', 'cosme@gmail.com')
-        ->orWhere('correo', 'cosme2@gmail.com')
-        ->first();
+      // Busqueda de el usuario en la base de datos por medio de correo electrónico
+      $this->user = User::where('correo', 'cosme@gmail.com')->first();
+      // Si  no se encuentra el usuario, debe lanzar un error
 
         // Si no puedes encontrar el usuario, podrías querer lanzar un error para que sepas que algo está mal
         if (!$this->user) {
