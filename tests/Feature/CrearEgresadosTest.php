@@ -46,17 +46,17 @@ class CrearEgresadosTest extends TestCase
         // Datos del egresado a enviar
         $datosEgresado = [
             'nombre' => 'Nombre del Egresado',
-            'año_egresado' => '2023',
+            'año_egresado' => 2023,
             'fecha_nacimiento' => '1990-01-01',
             'identidad' => '1234567891234',
-            'nro_expediente' => 'EX-123',
+            'nro_expediente' => '123',
             'gene_id' => $genero->id,
             'carre_id' => $carrera->id,
         ];
 
         $response = $this->post('/egresado', [
             'nombre' => 'Juan Pablo Ordoñez Salgado',
-            'año_egresado' => '2016',
+            'año_egresado' => 2016,
             'fecha_nacimiento' => '1994-08-15',
             'identidad' => '070319940240',
             'nro_expediente' => '10',
