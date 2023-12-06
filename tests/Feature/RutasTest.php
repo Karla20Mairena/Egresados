@@ -6,9 +6,27 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
 use Illuminate\Support\Facades\Route;
+use App\Models\User;
 
 class RutasTest extends TestCase
 {
+    
+    use RefreshDatabase;
+
+    protected $user;
+
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        $this->user = User::factory()->create();
+
+        $this->actingAs($this->user);
+
+        //migramos y sembramos
+        $this->artisan('migrate:refresh');
+        $this->artisan('db:seed');
+    }
     /**
      * Una prueba básica de características.
      *

@@ -24,7 +24,7 @@ class VistaAyudaTest extends TestCase
         $response = $this->get('/ayudaindex');
 
         $response->assertStatus(200);
-        $response->assertViewIs('ayuda.ayudaindex');
+        $response->assertViewIs('ayuda.index');
     }
 
     public function test_vista_ayuda_egresados()
@@ -32,7 +32,7 @@ class VistaAyudaTest extends TestCase
         $response = $this->get('/infoegresados');
 
         $response->assertStatus(200);
-        $response->assertViewIs('ayuda.infoegresados');
+        $response->assertViewIs('info.egresados');
     }
 
     public function test_vista_ayuda_carreras()
@@ -40,7 +40,7 @@ class VistaAyudaTest extends TestCase
         $response = $this->get('/infocarreras');
 
         $response->assertStatus(200);
-        $response->assertViewIs('ayuda.infocarreras');
+        $response->assertViewIs('info.carreras');
     }
 
     public function test_vista_ayuda_usuario()
@@ -48,7 +48,7 @@ class VistaAyudaTest extends TestCase
         $response = $this->get('/infousuario');
 
         $response->assertStatus(200);
-        $response->assertViewIs('ayuda.infousuario');
+        $response->assertViewIs('info.usuario');
     }
 
     public function test_vista_ayuda_perfil()
@@ -56,7 +56,7 @@ class VistaAyudaTest extends TestCase
         $response = $this->get('/infoperfil');
 
         $response->assertStatus(200);
-        $response->assertViewIs('ayuda.infoperfil');
+        $response->assertViewIs('info.perfil');
     }
 
     public function test_vista_ayuda_grafico()
