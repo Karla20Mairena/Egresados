@@ -45,15 +45,15 @@ class CrearEgresadosTest extends TestCase
         $this->withoutExceptionHandling();
 
         // Crear un genero y una carrera para asociar al egresado
-        $genero = factory(Genero::class)->create();
-        $carrera = factory(Carrera::class)->create();
+        $genero = Genero::factory()->create();
+        $carrera = Carrera::factory()->create();
 
         // Datos del egresado a enviar
         $datosEgresado = [
             'nombre' => 'Nombre del Egresado',
             'año_egresado' => '2023',
             'fecha_nacimiento' => '1990-01-01',
-            'identidad' => '123456789',
+            'identidad' => '1234567891234',
             'nro_expediente' => 'EX-123',
             'gene_id' => $genero->id,
             'carre_id' => $carrera->id,
@@ -63,7 +63,7 @@ class CrearEgresadosTest extends TestCase
             'nombre' => 'Juan Pablo Ordoñez Salgado',
             'año_egresado' => '2016',
             'fecha_nacimiento' => '1994-08-15',
-            'identidad' => '07031994024064',
+            'identidad' => '070319940240',
             'nro_expediente' => '10',
             'gene_id' => Genero::first()->id ,
             'carre_id' =>  Carrera::first()->id , 
@@ -78,7 +78,7 @@ class CrearEgresadosTest extends TestCase
         $this->assertDatabaseHas('egresados', ['nombre' => 'Juan Pablo Ordoñez Salgado',
         'año_egresado' => '2016',
         'fecha_nacimiento' => '1994-08-15',
-        'identidad' => '07031994024064',
+        'identidad' => '070319940240',
         'nro_expediente' => '10',
         'gene_id' => Genero::first()->id ,
         'carre_id' =>  Carrera::first()->id]);
