@@ -20,13 +20,8 @@ class CrearEgresadosTest extends TestCase
     {
         parent::setUp();
 
-        // Busqueda de el usuario en la base de datos por medio de correo electrónico
-        $this->user = User::where('correo', 'cosme@gmail.com')->first();
-        // Si  no se encuentra el usuario, debe lanzar un error
-        if (!$this->user) {
-            $this->fail('Usuario no encontrado');
-        }
-        // Actuando como el usuario encontrado
+        $this->user = User::factory()->create();
+
         $this->actingAs($this->user);
     }
 

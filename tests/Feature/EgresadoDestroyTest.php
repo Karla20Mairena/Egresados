@@ -6,10 +6,13 @@ use App\Models\Egresado;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
+use Illuminate\Support\Facades\DB;
 use Tests\TestCase;
 
 class EgresadoDestroyTest extends TestCase
 {
+
+    
     use RefreshDatabase;
 
     public function test_usuario_autenticado_puede_eliminar_egresado()

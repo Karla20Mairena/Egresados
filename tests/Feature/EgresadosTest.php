@@ -9,6 +9,7 @@ use App\Models\Egresado;
 use App\Models\Genero;
 use App\Models\Carrera;
 use App\Models\User;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class EgresadosTest extends TestCase

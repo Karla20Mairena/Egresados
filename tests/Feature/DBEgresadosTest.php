@@ -18,6 +18,7 @@ class DBEgresadosTest extends TestCase
 
     //Todas las pruebas esten dirigidas a la integrdad de la base de datos, que este normalizada, y pruebas a las relaciones de las tablas
 
+   
     public function test_restriccion_de_clave_unica()
     {
         $carrera = Carrera::create([

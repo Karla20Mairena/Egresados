@@ -6,6 +6,7 @@ use App\Models\Egresado;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
+use Illuminate\Support\Facades\DB;
 use Tests\TestCase;
 
 class EliminarEgresado extends TestCase
@@ -16,17 +17,8 @@ class EliminarEgresado extends TestCase
     {
         parent::setUp();
 
-        // Buscar el usuario en la base de datos por correo electrónico
-        $this->user = User::where('correo', 'cosme@gmail.com')
-        ->orWhere('correo', 'cosme2@gmail.com')
-        ->first();
+        $this->user = User::factory()->create();
 
-        // Si no puedes encontrar el usuario, podrías querer lanzar un error para que sepas que algo está mal
-        if (!$this->user) {
-            $this->fail('Usuario no encontrado');
-        }
-
-        // Actuar como el usuario encontrado
         $this->actingAs($this->user);
     }
    
