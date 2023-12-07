@@ -44,13 +44,13 @@ class EgresadoController extends Controller
         $maxima = date("Y-m-d",strtotime($max."+ 1 days"));
         $anio = date("Y");
         $this->validate($request,[
-            'identidad' => 'unique:egresados,identidad|regex:([0-9]{4}[0-9]{4}[0-9]{5})|nullable',
+            'identidad' => 'required|numeric|unique:egresados,identidad|regex:([0-9]{4}[0-9]{4}[0-9]{5})',
             'nombre' => 'required|regex:/^([A-Za-zÁÉÍÓÚáéíóúñÑ]+)(\s[A-Za-zÁÉÍÓÚáéíóúñÑ]+)*$/|max:100',
-            'fecha' => 'nullable|date|before:'.$maxima.'|after:'.$minima,
+            'fecha' => 'required|date|before:'.$maxima.'|after:'.$minima,
             'gene_id' => 'required|exists:generos,id',
             'carre_id' => 'required|exists:carreras,id',
             'egreso' => 'required|numeric|min:1970|before:'.($anio + 1),
-            'expediente' => 'numeric|regex:([0-9])|nullable',
+            'expediente' => 'required|numeric|regex:([0-9])',
         ], [
             'identidad.unique' => 'El número de identidad ya está registrado.',
             'identidad.regex' => 'El formato del número de identidad no es válido.',
@@ -135,16 +135,33 @@ class EgresadoController extends Controller
         $minima = date('Y-m-d',strtotime($fecha_actual."- 100 year"));
         $maxima = date("Y-m-d",strtotime($max."+ 1 days"));
         $anio = date("Y");
-
-        $request->validate([
-            
-            'identidad'=>'regex:([0-9]{4}[0-9]{4}[0-9]{5})|nullable|numeric',
-            'nombre'=>'required|regex:/^([A-Za-zÁÉÍÓÚáéíóúñÑ]+)(\s[A-Za-zÁÉÍÓÚáéíóúñÑ]+)*$/|max:30|max:3',
-            'fecha'=>'nullable|date|before:'.$maxima.'|after:'.$minima,
-            'gene_id'=>'required|exists:generos,id',
-            'carre_id'=>'required|exists:carreras,id',
-            'egreso'=>'required|numeric|min:1970|before:'.($anio + 1),
-            'expediente'=>'nullable|required|numeric|regex:([0-9])',
+        $this->validate($request,[
+            'identidad' => 'required|numeric|unique:egresados,identidad|regex:([0-9]{4}[0-9]{4}[0-9]{5})',
+            'nombre' => 'required|regex:/^([A-Za-zÁÉÍÓÚáéíóúñÑ]+)(\s[A-Za-zÁÉÍÓÚáéíóúñÑ]+)*$/|max:100',
+            'fecha' => 'required|date|before:'.$maxima.'|after:'.$minima,
+            'gene_id' => 'required|exists:generos,id',
+            'carre_id' => 'required|exists:carreras,id',
+            'egreso' => 'required|numeric|min:1970|before:'.($anio + 1),
+            'expediente' => 'required|numeric|regex:([0-9])',
+        ], [
+            'identidad.unique' => 'El número de identidad ya está registrado.',
+            'identidad.regex' => 'El formato del número de identidad no es válido.',
+            'nombre.required' => 'El nombre es obligatorio.',
+            'nombre.regex' => 'El nombre contiene caracteres no permitidos.',
+            'nombre.max' => 'El nombre no debe superar los 100 caracteres.',
+            'fecha.date' => 'El formato de la fecha no es válido.',
+            'fecha.before' => 'La fecha debe ser anterior a '.$maxima.'.',
+            'fecha.after' => 'La fecha debe ser posterior a '.$minima.'.',
+            'gene_id.required' => 'El género es obligatorio.',
+            'gene_id.exists' => 'El género seleccionado no es válido.',
+            'carre_id.required' => 'La carrera es obligatoria.',
+            'carre_id.exists' => 'La carrera seleccionada no es válida.',
+            'egreso.required' => 'El año de egreso es obligatorio.',
+            'egreso.numeric' => 'El año de egreso debe ser numérico.',
+            'egreso.min' => 'El año de egreso es demasiado antiguo.',
+            'egreso.before' => 'El año de egreso debe ser anterior a '.($anio + 1).'.',
+            'expediente.numeric' => 'El expediente debe ser numérico.',
+            'expediente.regex' => 'El formato del expediente no es válido.',
         ]);
 
         $egresado = Egresado::find($id);
